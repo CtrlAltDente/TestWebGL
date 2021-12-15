@@ -16,6 +16,11 @@ namespace Controllers
         [SerializeField]
         private float _rotateSpeed;
         
+        public void SetStartRotation(Vector3 rotation)
+		{
+            _rotation = rotation;
+		}
+
 		public void ClockwiseRotateX()
         {
             if (_totalRotationX < 90f)

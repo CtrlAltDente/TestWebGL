@@ -2,67 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SizeController : MonoBehaviour
+namespace Controllers
 {
-	[SerializeField]
-	private float _sizingSpeed;
-	[SerializeField]
-	[Range(1f, 2f)]
-	private float _sizingValue;
-
-	[SerializeField]
-	private Vector3 _minSizing;
-	[SerializeField]
-	private Vector3 _maxSizing;
-
-	[SerializeField]
-	private Vector3 _size;
-
-	private void Awake()
+	public class SizeController : MonoBehaviour
 	{
-		GetStartSize();
-	}
+		[SerializeField]
+		private float _sizingSpeed;
+		[SerializeField]
+		[Range(1f, 2f)]
+		private float _sizingValue;
 
-	public void IncreaseSize()
-	{
-		if (CurrentSizeLessThanMaximum())
+		private Vector3 _minSizing;
+		private Vector3 _maxSizing;
+
+		private Vector3 _size;
+
+		private void Awake()
 		{
-			_size += new Vector3(_sizingSpeed, _sizingSpeed, _sizingSpeed) * Time.deltaTime;
-			transform.localScale = _size;
+			GetStartSize();
 		}
-	}
 
-	public void DecreaseSize()
-	{
-		if (CurrentSizeLargerThanMinimum())
+		public void IncreaseSize()
 		{
-			_size -= new Vector3(_sizingSpeed, _sizingSpeed, _sizingSpeed) * Time.deltaTime;
-			transform.localScale = _size;
+			if (CurrentSizeLessThanMaximum())
+			{
+				_size += new Vector3(_sizingSpeed, _sizingSpeed, _sizingSpeed) * Time.deltaTime;
+				transform.localScale = _size;
+			}
 		}
-	}
 
-	private void GetStartSize()
-	{
-		_minSizing = transform.localScale;
-		_size = transform.localScale;
-		_maxSizing = new Vector3(_minSizing.x * _sizingValue, _minSizing.y * _sizingValue, _minSizing.z * _sizingValue);
-	}
-
-	private bool CurrentSizeLessThanMaximum()
-	{
-		if (transform.localScale.x < _maxSizing.x && transform.localScale.y < _maxSizing.y && transform.localScale.z < _maxSizing.z)
+		public void DecreaseSize()
 		{
-			return true;
+			if (CurrentSizeLargerThanMinimum())
+			{
+				_size -= new Vector3(_sizingSpeed, _sizingSpeed, _sizingSpeed) * Time.deltaTime;
+				transform.localScale = _size;
+			}
 		}
-		return false;
-	}
 
-	private bool CurrentSizeLargerThanMinimum()
-	{
-		if (transform.localScale.x > _minSizing.x && transform.localScale.y > _minSizing.y && transform.localScale.z > _minSizing.z)
+		public void SetStartSize(Vector3 size)
 		{
-			return true;
+			_minSizing = size;
+			_size = transform.localScale;
+			_maxSizing = new Vector3(_minSizing.x * _sizingValue, _minSizing.y * _sizingValue, _minSizing.z * _sizingValue);
 		}
-		return false;
+
+		private void GetStartSize()
+		{
+			_minSizing = transform.localScale;
+			_size = transform.localScale;
+			_maxSizing = new Vector3(_minSizing.x * _sizingValue, _minSizing.y * _sizingValue, _minSizing.z * _sizingValue);
+		}
+
+		private bool CurrentSizeLessThanMaximum()
+		{
+			if (transform.localScale.x < _maxSizing.x && transform.localScale.y < _maxSizing.y && transform.localScale.z < _maxSizing.z)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		private bool CurrentSizeLargerThanMinimum()
+		{
+			if (transform.localScale.x > _minSizing.x && transform.localScale.y > _minSizing.y && transform.localScale.z > _minSizing.z)
+			{
+				return true;
+			}
+			return false;
+		}
 	}
 }
