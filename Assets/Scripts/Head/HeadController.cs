@@ -120,7 +120,7 @@ namespace Controllers
 		{
 			while (true)
 			{
-				if (Vector3.Distance(_headLayers[_headLayers.Count - 1].localPosition, new Vector3(_startLayerPositionX, 0f, 0f)) > 0.01f)
+				if (Vector3.Distance(_headLayers[_headLayers.Count - 1].localPosition, new Vector3(_startLayerPositionX, 0f, 0f)) > 0)
 				{
 					for (int i = 0; i < _headLayers.Count; i++)
 					{
