@@ -1,19 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectedObjectWithText : MonoBehaviour
 {
-    [SerializeField]
-    private List<Text> _description = new List<Text>();
+	[SerializeField]
+	private List<Text> _description = new List<Text>();
 
 	[SerializeField]
-    private List<GameObject> _object = new List<GameObject>();
+	private List<GameObject> _object = new List<GameObject>();
 
 	public void SetActiveObject(int i)
 	{
-		foreach(var text in _description)
+		foreach (var text in _description)
 		{
 			text.fontStyle = FontStyle.Normal;
 		}
@@ -52,7 +51,7 @@ public class SelectedObjectWithText : MonoBehaviour
 			{
 				if (hit.transform.gameObject != null)
 				{
-					for(int i = 0;i < _object.Count; i++)
+					for (int i = 0; i < _object.Count; i++)
 					{
 						_description[i].fontStyle = FontStyle.Normal;
 						if (hit.transform.gameObject == _object[i])

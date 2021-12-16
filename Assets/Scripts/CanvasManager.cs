@@ -1,36 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CanvasManager : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> _mainCanvases = new List<GameObject>();
-    [SerializeField]
-    private List<GameObject> _canvasObject = new List<GameObject>();
+	[SerializeField]
+	private List<GameObject> _mainCanvases = new List<GameObject>();
+	[SerializeField]
+	private List<GameObject> _canvasObject = new List<GameObject>();
 
-    public void EnableNextCanvas(int i)
+	public void EnableNextCanvas(int i)
 	{
 
-        DisableCanvas(i-1);
-        EnableCanvas(i);
+		DisableCanvas(i - 1);
+		EnableCanvas(i);
 	}
 
-    public void EnablePreviousCanvas(int i)
+	public void EnablePreviousCanvas(int i)
 	{
-        DisableCanvas(i+1);
-        EnableCanvas(i);
-    }
+		DisableCanvas(i + 1);
+		EnableCanvas(i);
+	}
 
-    private void EnableCanvas(int i)
+	private void EnableCanvas(int i)
 	{
-        _canvasObject[i].SetActive(true);
-        _mainCanvases[i].SetActive(true);
-    }
+		_canvasObject[i].SetActive(true);
+		_mainCanvases[i].SetActive(true);
+	}
 
-    private void DisableCanvas(int i)
+	private void DisableCanvas(int i)
 	{
-        _canvasObject[i].SetActive(false);
-        _mainCanvases[i].SetActive(false);
-    }
+		_canvasObject[i].SetActive(false);
+		_mainCanvases[i].SetActive(false);
+	}
 }

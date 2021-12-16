@@ -19,17 +19,24 @@ namespace Controllers
 
 		[SerializeField]
 		private float _sizingSpeed;
+		[SerializeField]
+		private float _rotationSpeed;
+		[SerializeField]
+		private float _closingLayersSpeed;
 
 		[SerializeField]
 		private Transform _directionPoint;
 
 		[SerializeField]
-		private float _rotationSpeed;
-
-		[SerializeField]
 		private List<Transform> _headLayers = new List<Transform>();
 		[SerializeField]
 		private Slider _layersSlider;
+
+		[SerializeField]
+		private float _startLayerPositionX;
+		[SerializeField]
+		private float _spaceBetweenLayers;
+
 
 		private void Awake()
 		{
@@ -38,31 +45,11 @@ namespace Controllers
 			_boxCollider = GetComponent<BoxCollider>();
 		}
 
-		private void Update()
+		public void EnableOrDisableBoxCollider()
 		{
-			CheckCanvasAndLayers();
-		}
-
-		private void OnMouseUpAsButton()
-		{
-			if (_firstCanvas.active)
-			{
-				_canvasManager.EnableNextCanvas(1);
-				Debug.Log("Wqwedfaz");
-				_firstCanvas.SetActive(false);
-				_boxCollider.enabled = false;
-
-				StartCoroutine(NormalizeSize());
-				StartCoroutine(NormalizeRotation());
-			}
-		}
-
-		private void CheckCanvasAndLayers()
-		{
-			if(_firstCanvas.active)
+			if (_firstCanvas.activeInHierarchy)
 			{
 				_boxCollider.enabled = true;
-				ControlLayers();
 			}
 			else
 			{
@@ -70,22 +57,42 @@ namespace Controllers
 			}
 		}
 
-		public void ControlLayers()
+		public void OpenLayers()
 		{
-			if(!_firstCanvas.active)
+			if (!_firstCanvas.activeInHierarchy)
 			{
 
-				for(int i = 0;i<_headLayers.Count;i++)
+				for (int i = 0; i < _headLayers.Count; i++)
 				{
-					_headLayers[i].localPosition = new Vector3(0.25f + _layersSlider.value * (float)i*0.5f,0f,0f);
+					_headLayers[i].localPosition = new Vector3(_startLayerPositionX + _layersSlider.value * (float)i * _spaceBetweenLayers, 0f, 0f);
 				}
 			}
 			else
 			{
 				for (int i = 0; i < _headLayers.Count; i++)
 				{
-					_headLayers[i].localPosition = new Vector3(0.25f,0f,0f);
+					_headLayers[i].localPosition = new Vector3(_startLayerPositionX, 0f, 0f);
 				}
+			}
+		}
+
+		public void CloseLayers()
+		{
+			StartCoroutine(ConnectLayers());
+		}
+
+		private void OnMouseUpAsButton()
+		{
+			if (_firstCanvas.activeInHierarchy)
+			{
+				_canvasManager.EnableNextCanvas(1);
+				_layersSlider.value = 0f;
+				Debug.Log("Wqwedfaz");
+				_firstCanvas.SetActive(false);
+				EnableOrDisableBoxCollider();
+
+				StartCoroutine(NormalizeSize());
+				StartCoroutine(NormalizeRotation());
 			}
 		}
 
@@ -107,6 +114,25 @@ namespace Controllers
 				yield return new WaitForEndOfFrame();
 			}
 			_rotateController.SetStartRotation(Vector3.zero);
+		}
+
+		private IEnumerator ConnectLayers()
+		{
+			while (true)
+			{
+				if (Vector3.Distance(_headLayers[_headLayers.Count - 1].localPosition, new Vector3(_startLayerPositionX, 0f, 0f)) > 0.01f)
+				{
+					for (int i = 0; i < _headLayers.Count; i++)
+					{
+						_headLayers[i].localPosition = Vector3.MoveTowards(_headLayers[i].localPosition, new Vector3(_startLayerPositionX, 0f, 0f), _closingLayersSpeed * Time.deltaTime);
+					}
+				}
+				else
+				{
+					break;
+				}
+				yield return new WaitForEndOfFrame();
+			}
 		}
 	}
 }
