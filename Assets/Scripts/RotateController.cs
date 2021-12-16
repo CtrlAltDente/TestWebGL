@@ -7,6 +7,7 @@ namespace Controllers
 		private float _totalRotationX = 0f;
 		private float _totalRotationY = 0f;
 
+		[SerializeField]
 		private Vector3 _rotation = new Vector3(0f, 0f, 0f);
 
 		[SerializeField]
@@ -15,6 +16,8 @@ namespace Controllers
 		public void SetStartRotation(Vector3 rotation)
 		{
 			_rotation = rotation;
+			_totalRotationX = 0f;
+			_totalRotationY = 0f;
 		}
 
 		public void ClockwiseRotateX()
